@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  database:
+    env_file:
+      - proj_vars/proj_vars.env
+    image: "amirhazan/devops_experts_docker_hw_one:${DB_TAG}${BUILD_NUMBER}"
+    build:
+      context: .
+      dockerfile: Dockerfiles/Dockerfile-database
+    command: mysqld
+  python:
+    env_file:
+      - proj_vars/proj_vars.env
+    image: "amirhazan/devops_experts_docker_hw_one:${PY_TAG}${BUILD_NUMBER}"
+    build:
+      context: .
+      dockerfile: Dockerfiles/Dockerfile-python
+    command: python main.py
+    volumes:
+      - .:/app
+      - ./requirements.txt:/app/requirements.txt
+    links:
+      - database
+    depends_on:
+      - database

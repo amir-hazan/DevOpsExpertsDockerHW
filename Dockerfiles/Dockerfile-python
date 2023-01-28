@@ -1,0 +1,17 @@
+FROM python:3.9.16-alpine3.17
+
+# Set the working directory in the container
+WORKDIR src/app/
+
+# Copy the main app to the container
+COPY ../src/app/main.py /src/app/main.py
+RUN chmod +x main.py
+
+# Copy the requirements file to the container
+COPY ../requirements.txt /src/app/requirements.txt
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --trusted-host pypi.python.org -r /src/app/requirements.txt
+
+# Run the command to start the app
+CMD ["python", "main.py"]
